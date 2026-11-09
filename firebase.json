@@ -1,0 +1,16 @@
+{
+  "firestore": [
+    {
+      "database": "ai-studio-android-clothing-b9ea2f46-5607-440a-be40-0e75f6124ffd",
+      "rules": "firestore.rules"
+    }
+  ],
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8085
+    }
+  }
+}

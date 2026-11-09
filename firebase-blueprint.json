@@ -1,0 +1,151 @@
+{
+  "entities": {
+    "User": {
+      "path": "/users/{userId}",
+      "description": "بيانات المستخدم وموظف المتجر ودوره",
+      "fields": {
+        "userId": { "type": "string", "description": "معرف المستخدم" },
+        "email": { "type": "string", "description": "البريد الإلكتروني" },
+        "displayName": { "type": "string", "description": "اسم العرض" },
+        "role": { "type": "string", "description": "الدور: MANAGER أو CASHIER" },
+        "pinCode": { "type": "string", "description": "رمز الدخول السريع" },
+        "active": { "type": "boolean", "description": "حالة الحساب" },
+        "createdAt": { "type": "timestamp", "description": "تاريخ الإنشاء" },
+        "updatedAt": { "type": "timestamp", "description": "تاريخ التحديث" }
+      },
+      "required": ["userId", "email", "role"]
+    },
+    "Product": {
+      "path": "/products/{productId}",
+      "description": "موديل أو نوع الملابس الرئيسي",
+      "fields": {
+        "userId": { "type": "string", "description": "معرف المالك" },
+        "code": { "type": "string", "description": "رمز الموديل" },
+        "name": { "type": "string", "description": "اسم المنتج أو الموديل" },
+        "category": { "type": "string", "description": "التصنيف (رجالي، نسائي، أطفالي، إلخ)" },
+        "brand": { "type": "string", "description": "الماركة" },
+        "season": { "type": "string", "description": "الموسم" },
+        "description": { "type": "string", "description": "وصف المنتج" },
+        "imageUrl": { "type": "string", "description": "رابط الصورة" },
+        "defaultSellingPriceIqd": { "type": "number", "description": "سعر البيع الافتراضي بالدينار العراقي (أرقام صحيحة)" },
+        "totalStock": { "type": "number", "description": "إجمالي المخزون لجميع المقاسات والألوان" },
+        "createdAt": { "type": "timestamp", "description": "تاريخ الإنشاء" },
+        "updatedAt": { "type": "timestamp", "description": "تاريخ التحديث" }
+      },
+      "required": ["userId", "name", "category"]
+    },
+    "Variant": {
+      "path": "/variants/{variantId}",
+      "description": "توليفة محددة من المنتج واللون والمقاس",
+      "fields": {
+        "userId": { "type": "string", "description": "معرف المالك" },
+        "productId": { "type": "string", "description": "معرف المنتج الأب" },
+        "size": { "type": "string", "description": "المقاس (S, M, L, XL, 38, إلخ)" },
+        "color": { "type": "string", "description": "اللون" },
+        "sku": { "type": "string", "description": "رمز التخزين التعريفي" },
+        "barcode": { "type": "string", "description": "الباركود الدولي أو الداخلي" },
+        "currentStock": { "type": "number", "description": "الرصيد الفعلي الحالي" },
+        "minStockAlert": { "type": "number", "description": "حد إعادة الطلب للتنبيه" },
+        "sellingPriceIqd": { "type": "number", "description": "سعر البيع المعتمد بالدينار العراقي" },
+        "createdAt": { "type": "timestamp", "description": "تاريخ الإنشاء" },
+        "updatedAt": { "type": "timestamp", "description": "تاريخ التحديث" }
+      },
+      "required": ["userId", "productId", "size", "color"]
+    },
+    "PurchaseBatch": {
+      "path": "/purchase_batches/{batchId}",
+      "description": "دفعة شراء أو فاتورة مورد",
+      "fields": {
+        "userId": { "type": "string", "description": "معرف المالك" },
+        "batchNumber": { "type": "string", "description": "رقم الدفعة أو الفاتورة" },
+        "supplierName": { "type": "string", "description": "اسم المورد" },
+        "invoiceDate": { "type": "string", "description": "تاريخ الفاتورة" },
+        "totalCostIqd": { "type": "number", "description": "إجمالي تكلفة الشراء بالدينار العراقي" },
+        "notes": { "type": "string", "description": "ملاحظات الدفعة" },
+        "status": { "type": "string", "description": "الحالة: RECEIVED أو PENDING" },
+        "createdAt": { "type": "timestamp", "description": "تاريخ الإدخال" }
+      },
+      "required": ["userId", "batchNumber", "totalCostIqd"]
+    },
+    "PurchaseBatchItem": {
+      "path": "/purchase_batch_items/{itemId}",
+      "description": "بند تفصيلي في دفعة الشراء لاحتساب FIFO التاريخي دون مساس",
+      "fields": {
+        "userId": { "type": "string", "description": "معرف المالك" },
+        "batchId": { "type": "string", "description": "معرف دفعة الشراء" },
+        "productId": { "type": "string", "description": "معرف المنتج" },
+        "variantId": { "type": "string", "description": "معرف المتغير" },
+        "purchasedQty": { "type": "number", "description": "الكمية المشتراة الأصلية" },
+        "remainingQty": { "type": "number", "description": "الكمية المتبقية للاستهلاك بنظام FIFO" },
+        "unitCostIqd": { "type": "number", "description": "تكلفة شراء القطعة الواحدة بالدينار العراقي" },
+        "purchaseDate": { "type": "string", "description": "تاريخ الشراء" },
+        "createdAt": { "type": "timestamp", "description": "تاريخ الإنشاء" }
+      },
+      "required": ["userId", "batchId", "variantId", "purchasedQty", "remainingQty", "unitCostIqd"]
+    },
+    "Sale": {
+      "path": "/sales/{saleId}",
+      "description": "فاتورة بيع صادرة للعميل",
+      "fields": {
+        "userId": { "type": "string", "description": "معرف المالك" },
+        "invoiceNumber": { "type": "string", "description": "رقم الفاتورة" },
+        "customerName": { "type": "string", "description": "اسم الزبون" },
+        "totalAmountIqd": { "type": "number", "description": "الإجمالي قبل الخصم" },
+        "totalDiscountIqd": { "type": "number", "description": "قيمة الخصم" },
+        "netAmountIqd": { "type": "number", "description": "الصافي النهائي بالدينار" },
+        "paymentMethod": { "type": "string", "description": "طريقة الدفع (CASH / CARD)" },
+        "saleDate": { "type": "string", "description": "تاريخ ووقت البيع" },
+        "cashierId": { "type": "string", "description": "معرف الكاشير" },
+        "createdAt": { "type": "timestamp", "description": "تاريخ التسجيل" }
+      },
+      "required": ["userId", "invoiceNumber", "netAmountIqd"]
+    },
+    "SaleItem": {
+      "path": "/sale_items/{itemId}",
+      "description": "صنف مباع داخل فاتورة البيع",
+      "fields": {
+        "userId": { "type": "string", "description": "معرف المالك" },
+        "saleId": { "type": "string", "description": "معرف الفاتورة" },
+        "productId": { "type": "string", "description": "معرف المنتج" },
+        "variantId": { "type": "string", "description": "معرف المتغير" },
+        "quantity": { "type": "number", "description": "الكمية المباعة" },
+        "unitSalePriceIqd": { "type": "number", "description": "سعر بيع القطعة" },
+        "totalItemPriceIqd": { "type": "number", "description": "إجمالي البند" },
+        "costOfGoodsSoldIqd": { "type": "number", "description": "تكلفة البضاعة المباعة المحسوبة بواسطة FIFO" },
+        "createdAt": { "type": "timestamp", "description": "تاريخ الإنشاء" }
+      },
+      "required": ["userId", "saleId", "variantId", "quantity", "unitSalePriceIqd"]
+    },
+    "Expense": {
+      "path": "/expenses/{expenseId}",
+      "description": "سجل المصاريف التشغيلية للمتجر",
+      "fields": {
+        "userId": { "type": "string", "description": "معرف المالك" },
+        "title": { "type": "string", "description": "بيان المصروف" },
+        "category": { "type": "string", "description": "فئة المصروف" },
+        "amountIqd": { "type": "number", "description": "المبلغ بالدينار العراقي الصحيح" },
+        "expenseDate": { "type": "string", "description": "تاريخ الصرف" },
+        "notes": { "type": "string", "description": "ملاحظات" },
+        "recordedBy": { "type": "string", "description": "مدون المصروف" },
+        "createdAt": { "type": "timestamp", "description": "تاريخ التسجيل" }
+      },
+      "required": ["userId", "title", "amountIqd"]
+    },
+    "StockMovement": {
+      "path": "/stock_movements/{movementId}",
+      "description": "سجل تتبع حركات المخزون للتدقيق والرقابة",
+      "fields": {
+        "userId": { "type": "string", "description": "معرف المالك" },
+        "variantId": { "type": "string", "description": "معرف المتغير" },
+        "type": { "type": "string", "description": "نوع الحركة: PURCHASE, SALE, ADJUSTMENT, RETURN" },
+        "quantityDelta": { "type": "number", "description": "مقدار التغير بالكمية" },
+        "referenceBatchId": { "type": "string", "description": "مرجع دفعة الشراء إن وجد" },
+        "referenceSaleId": { "type": "string", "description": "مرجع فاتورة البيع إن وجد" },
+        "previousStock": { "type": "number", "description": "الرصيد السابق" },
+        "newStock": { "type": "number", "description": "الرصيد اللاحق" },
+        "timestamp": { "type": "timestamp", "description": "وقت تسجيل الحركة" }
+      },
+      "required": ["userId", "variantId", "type", "quantityDelta"]
+    }
+  }
+}

@@ -1,0 +1,6 @@
+{
+  "name": "إبرة وخيط",
+  "description": "تطبيق إدارة متجر الملابس النسائية والمخزون والمبيعات بنظام FIFO",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
